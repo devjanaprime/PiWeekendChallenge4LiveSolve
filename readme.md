@@ -1,6 +1,8 @@
-Weekend 4 Challenge Example
-===========================
+Pi Weekend 4 Challenge Example: 'Todo List'
+===========================================
 
+Technologies:
+-------------
 * JQuery
 * Node
 * Express
@@ -8,8 +10,8 @@ Weekend 4 Challenge Example
 
 db/table 411:
 -------------
-db: 'todo'
-table: 'todos'
+db name: 'todo'
+table name: 'todos'
 * id: int, sequence
 * name: varchar 64
 * description: text

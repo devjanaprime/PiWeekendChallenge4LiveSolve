@@ -27,8 +27,10 @@ app.put( '/completeTask', urlencodedParser, function( req, res ){
     } // end error
     else{
       console.log( 'connected to db');
+      // update this record to have "complete" as true
       var queryResult = client.query( 'UPDATE todos SET complete=true WHERE id=' + req.body.id );
-      console.log( queryResult );
+      done();
+      // send back something so the client gets to "success"
       res.send( true );
     } // end no error
   }); //end pg connect
@@ -43,12 +45,16 @@ app.get( '/getTasks', function( req, res ){
     } // end err
     else{
       console.log( 'connected to db');
+      // array to hold our results to return to client
       var results=[];
+      // get query results
       var queryResults = client.query( 'SELECT * FROM todos ORDER BY complete ASC' );
       queryResults.on( 'row' , function( row ){
+        // push each row into results array
         results.push( row );
       }); // end on row
       queryResults.on( 'end', function(){
+        // done? then send the results back to client
         done();
         res.send( results );
       }); //end done
@@ -64,11 +70,13 @@ app.post( '/newTask', urlencodedParser, function( req, res ){
     }
     else{
       console.log( 'connected to db' );
-      var queryResults = client.query( 'INSERT INTO todos ( name, description, complete ) VALUES ( $1, $2, $3 )', [ req.body.name, req.body.description, false ] );
+      // insert new item to db
+      client.query( 'INSERT INTO todos ( name, description, complete ) VALUES ( $1, $2, $3 )', [ req.body.name, req.body.description, false ] );
     } // end no error
   }); // end pg connect
+  // send back something so the client will get to "success"
   res.send( true );
 }); // end newTask
 
-// static
+// static folder
 app.use( express.static( 'public' ) );
